@@ -40,6 +40,10 @@ class PdfReport:
         pdf = FPDF(orientation='P', unit='pt', format='A4')
         pdf.add_page()
 
+        # Add image icon
+        pdf.image("App2-Flatmates-Bill/assets/house.png", w=30, h=30)
+        
+
         # Title
         pdf.set_font(family='Arial', size=24, style='B')
         pdf.cell(w=0, h=80, txt="Flatmates Bill", border=1, align='C', ln=1)
