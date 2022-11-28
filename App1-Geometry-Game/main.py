@@ -1,4 +1,6 @@
 from random import randint
+from turtle import *
+import turtle
 
 class Point:
 
@@ -10,6 +12,15 @@ class Point:
         if rectangle.point1.x < self.x < rectangle.point2.x and rectangle.point1.y < self.y < rectangle.point2.y:
             return True
         else: return False
+
+
+class GuiPoint(Point):
+
+    def draw(self, canvas, size=5, color='red'):
+        canvas.penup()
+        canvas.goto(self.x, self.y)
+        canvas.pendown()
+        canvas.dot(size, color)
 
 
 class Rectangle:
@@ -26,7 +37,27 @@ class Rectangle:
         return ((self.point2.x - self.point1.x) * (self.point2.y - self.point1.y))
 
 
-rectangle = Rectangle(Point(randint(0, 9), randint(0, 9)), Point(randint(10, 19), randint(10, 19)))
+class GuiRectangle(Rectangle):
+
+    def draw(self, canvas):
+        canvas.penup()
+        canvas.goto(self.point1.x, self.point1.y)
+        canvas.pendown()
+        x_dist = self.point2.x - self.point1.x
+        y_dist = self.point2.y - self.point1.y
+        canvas.forward(x_dist)
+        canvas.left(90)
+        canvas.forward(y_dist)
+        canvas.left(90)
+        canvas.forward(x_dist)
+        canvas.left(90)
+        canvas.forward(y_dist)
+
+
+
+
+
+rectangle = GuiRectangle(Point(randint(0, 9)*10, randint(0, 9)*10), Point(randint(10, 19)*10, randint(10, 19)*10))
 
 print(
     "Rectangle Coordinates: ",
@@ -36,8 +67,25 @@ print(
     rectangle.point2.y
 )
 
-user_point = Point(float(input("Guess x: ")), float(input("Guess y: ")))
+user_point = GuiPoint(float(input("Guess x: ")), float(input("Guess y: ")))
+
 user_area = float(input("Guess rectangle area: "))
 
 print("Point inside the rectangle: ", user_point.falls_in_rectangle(rectangle))
 print("Your area was off by: ", rectangle.area() - user_area)
+
+
+# set screen
+width = 400
+height = 400
+screen = Screen()
+screen.setup(width, height)
+
+# Canvas to draw rectangle on
+canvas = turtle.Turtle()
+
+
+rectangle.draw(canvas=canvas)
+user_point.draw(canvas=canvas)
+
+turtle.done()
